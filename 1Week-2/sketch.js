@@ -35,8 +35,11 @@ function preload() {
 
  //video from https://www.pexels.com/video/creatures-underwater-855436/
   videoUnderwater = createVideo('assets/underWater.mp4');
-  videoUnderwater.loop();
+  //set before loop
   videoUnderwater.size(640, 480);
+  videoUnderwater.loop();
+  videoUnderwater.hide();
+
 }
 
 function setup() {
@@ -60,10 +63,10 @@ function setup() {
   // load pixels tells p5 to make the image or video pixel array available at .pixels
   // see p5 documentation https://p5js.org/reference/#/p5/loadPixels
   // see Coding Train video on pixel array https://www.youtube.com/watch?v=nMUMZ5YRxHI
-  videoUnderwater.loadPixels();
+  //videoUnderwater.loadPixels();
 
   // store my secretpixels in a global variable to use later
-  secretPixels = videoUnderwater.pixels;
+  //secretPixels = videoUnderwater.pixels;
 }
 
 // this save the current webcam video frame to the background pixel array
@@ -91,10 +94,14 @@ function setBG() {
 function draw() {
 
   // see above documentation on loadPixels
+  //webcam
   myVideo.loadPixels();
+  //water video
+  videoUnderwater.loadPixels();
 
   // get the current pixels from pixel array (documentation above)
   const currentPixels = myVideo.pixels;
+  const underwaterPixels = videoUnderwater.pixels;
 
   // get the threshold value from the slider
   // all webcams will have some natural noise that looks like "movement"
@@ -129,9 +136,9 @@ function draw() {
         currentPixels[i + 2] = 0;
       } else {
         // otherwise, show me the cat!
-        currentPixels[i + 0] = secretPixels[i + 0];
-        currentPixels[i + 1] = secretPixels[i + 1];
-        currentPixels[i + 2] = secretPixels[i + 2];
+        currentPixels[i + 0] = underwaterPixels[i + 0];
+        currentPixels[i + 1] = underwaterPixels[i + 1];
+        currentPixels[i + 2] = underwaterPixels[i + 2];
       }
       /////////// End Cat  ////////////
 
@@ -171,4 +178,5 @@ function draw() {
 
   // draw the updated video to the canvas
   image(myVideo, 0, 0, width, height);
+  // image(videoUnderwater, 0, 0, width, height);
 }
